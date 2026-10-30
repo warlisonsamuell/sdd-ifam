@@ -1,0 +1,33 @@
+:root {
+  color-scheme: dark;
+  font-family: monospace;
+}
+
+body {
+  display: grid;
+  min-height: 100vh;
+  margin: 0;
+  place-items: center;
+  background: var(--game-background);
+  color: var(--game-text);
+}
+
+.game-shell {
+  width: min(100%, var(--game-width));
+}
+
+canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+}

@@ -2,7 +2,7 @@
 
 > Como usar: rode `/4-implementar N` para cada tarefa, teste no navegador e faça commit.
 
-- [ ] 1. Monte o esqueleto visível
+- [x] 1. Monte o esqueleto visível
   - Crie a página com a área Canvas fixa, centralizada e com o visual escuro definido no design.
   - Exporte o `CONFIG` inicial e configure `main.js` para desenhar o nome do jogo e a instrução de início.
   - Inicie o loop com `requestAnimationFrame` e delta time, mantendo algo visível no Canvas.
