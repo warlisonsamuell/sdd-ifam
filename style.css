@@ -1,6 +1,10 @@
 :root {
   color-scheme: dark;
-  font-family: monospace;
+  font-family: ui-monospace, "Courier New", monospace;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
@@ -14,6 +18,9 @@ body {
 
 .game-shell {
   width: min(100%, var(--game-width));
+  border: 1px solid var(--game-accent);
+  outline: 1px solid var(--game-accent);
+  outline-offset: 3px;
 }
 
 canvas {

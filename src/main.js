@@ -1,22 +1,25 @@
 import { CONFIG } from "./config.js";
 import { createGameState, startGame, updateGame } from "./game.js";
+import { loadRecord, saveRecord } from "./record.js";
 
 const canvas = document.querySelector("#game-canvas");
 const context = canvas.getContext("2d");
 const gameState = createGameState();
 const input = { left: false, right: false };
+let record = loadRecord();
 let previousFrameTimestamp = null;
 
 canvas.width = CONFIG.canvasWidth;
 canvas.height = CONFIG.canvasHeight;
 document.documentElement.style.setProperty("--game-background", CONFIG.colors.background);
 document.documentElement.style.setProperty("--game-text", CONFIG.colors.text);
+document.documentElement.style.setProperty("--game-accent", CONFIG.colors.accent);
 document.documentElement.style.setProperty("--game-width", `${CONFIG.canvasWidth}px`);
 
 function handleKeyDown(event) {
   if (event.code === CONFIG.startKey) {
     event.preventDefault();
-    if (gameState.phase === "start") {
+    if (!event.repeat && (gameState.phase === "start" || gameState.phase === "gameover")) {
       startGame(gameState);
     }
   }
@@ -80,8 +83,11 @@ function drawPlayingScreen() {
     CONFIG.hudInset,
   );
   context.textAlign = "right";
+  const livesDisplay = gameState.lives > 0
+    ? CONFIG.lifeEmoji.repeat(gameState.lives)
+    : String(gameState.lives);
   context.fillText(
-    `${CONFIG.livesLabel}: ${gameState.lives}`,
+    `${CONFIG.livesLabel}: ${livesDisplay}`,
     CONFIG.canvasWidth - CONFIG.hudInset,
     CONFIG.hudInset,
   );
@@ -103,15 +109,54 @@ function drawPlayingScreen() {
   }
 }
 
+function drawGameOverScreen() {
+  context.fillStyle = CONFIG.colors.background;
+  context.fillRect(0, 0, CONFIG.canvasWidth, CONFIG.canvasHeight);
+  context.textAlign = "center";
+  context.textBaseline = "middle";
+  context.fillStyle = CONFIG.colors.accent;
+  context.font = `${CONFIG.titleFontSize}px ${CONFIG.fontFamily}`;
+  context.fillText(
+    CONFIG.gameOverTitle,
+    CONFIG.canvasWidth / 2,
+    CONFIG.canvasHeight / 2 + CONFIG.titleOffsetY,
+  );
+
+  context.fillStyle = CONFIG.colors.text;
+  context.font = `${CONFIG.instructionFontSize}px ${CONFIG.fontFamily}`;
+  context.fillText(
+    `${CONFIG.scoreLabel}: ${gameState.score}`,
+    CONFIG.canvasWidth / 2,
+    CONFIG.canvasHeight / 2 + CONFIG.gameOverScoreOffsetY,
+  );
+  context.fillText(
+    `${CONFIG.recordLabel}: ${record}`,
+    CONFIG.canvasWidth / 2,
+    CONFIG.canvasHeight / 2 + CONFIG.gameOverRecordOffsetY,
+  );
+  context.fillText(
+    CONFIG.replayInstruction,
+    CONFIG.canvasWidth / 2,
+    CONFIG.canvasHeight / 2 + CONFIG.gameOverInstructionOffsetY,
+  );
+}
+
 function frame(timestamp) {
   const deltaTime = previousFrameTimestamp === null
     ? 0
     : (timestamp - previousFrameTimestamp) / CONFIG.millisecondsPerSecond;
   previousFrameTimestamp = timestamp;
 
+  const wasPlaying = gameState.phase === "playing";
   updateGame(gameState, input, deltaTime);
+  if (wasPlaying && gameState.phase === "gameover") {
+    record = saveRecord(gameState.score, record);
+  }
+
   if (gameState.phase === "start") {
     drawStartScreen();
+  } else if (gameState.phase === "gameover") {
+    drawGameOverScreen();
   } else {
     drawPlayingScreen();
   }

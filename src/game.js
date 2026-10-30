@@ -102,7 +102,7 @@ export function updateGame(state, input, deltaTime) {
       if (state.phase !== "playing") {
         return;
       }
-    } else if (item.y >= CONFIG.canvasHeight) {
+    } else if (item.y + item.size >= CONFIG.canvasHeight) {
       state.items.splice(itemIndex, 1);
     }
   }
