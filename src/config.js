@@ -26,9 +26,13 @@ export const CONFIG = Object.freeze({
   startInstruction: "Pressione ESPAÇO para começar",
   titleFontSize: 32,
   instructionFontSize: 18,
+  hudFontSize: 18,
+  hudInset: 16,
   titleOffsetY: -24,
   instructionOffsetY: 28,
   fontFamily: "monospace",
+  scoreLabel: "Pontos",
+  livesLabel: "Vidas",
   colors: Object.freeze({
     background: "#111827",
     text: "#e5e7eb",

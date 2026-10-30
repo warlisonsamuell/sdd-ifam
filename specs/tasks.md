@@ -10,7 +10,7 @@
   - **Como verificar:** abra a página no navegador → a área central mostra “Chuva de Bugs” e a instrução para pressionar Espaço.
   - _Requisitos: 1.1_
 
-- [ ] 2. Implemente a partida jogável
+- [x] 2. Implemente a partida jogável
   - Crie o estado e as regras em `game.js`: início, movimento do dev, surgimento e queda de itens, colisões e remoção de itens que chegam ao chão.
   - Conecte as setas e A/D ao movimento, limitando o dev à área de jogo.
   - Exiba pontuação e vidas e aumente gradualmente a velocidade e a frequência de surgimento.
